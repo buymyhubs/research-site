@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "AlteHaasGroteskBold";
+  src: url("./fonts/AlteHaasGroteskBold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: 2rem;
+  margin: 2.5rem;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-family: "AlteHaasGroteskBold", sans-serif;
+  font-synthesis: none;
+}
+
+footer {
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  left: 0;
+  height: 42px;
+}
+
+.floaty {
+  display: block;
+  width: fit-content;
+  margin-inline: auto;
+  flex: 0 1 auto;
+}
+
+.text-left {
+  margin-inline: 0 auto;
+  text-align: start;
+}
+
+.text-right {
+  margin-inline: auto 0;
+  text-align: end;
+}
+
+.box {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0;
+  align-items: flex-start;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .floaty {
+    transform: translate(var(--offset-x, 0px), var(--offset-y, 0px));
+    transition: transform 0.2s ease-out;
+    will-change: transform;
+  }
+}
+
+::selection {
+  background-color: #b3d4fc;
+  color: #000000;
+}
