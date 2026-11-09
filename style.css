@@ -45,12 +45,24 @@ footer {
   padding-bottom: 2rem;
   padding-top: 2rem;
 }
+.footer-spacer {
+  height: 50px;
+}
 
 .floaty {
   display: block;
   min-width: 0;
   height: 20dvw;
   margin: 0;
+}
+
+.floaty-image {
+  margin: auto !important;
+}
+
+.floaty-footer-image {
+  width: 100dvw;
+  height: fit-content;
 }
 
 .fit {
