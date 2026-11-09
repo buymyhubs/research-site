@@ -144,19 +144,45 @@ document.addEventListener("visibilitychange", calibrate);
 window.addEventListener("scroll", calibrate, { passive: true });
 window.addEventListener("scroll", requestUpdate, { passive: true });
 
+let gyroRequested = false;
+
 function initGyroPermission() {
+  if (gyroRequested) return;
   if (
-    typeof DeviceOrientationEvent !== "undefined" &&
-    typeof DeviceOrientationEvent.requestPermission === "function"
+    typeof DeviceOrientationEvent === "undefined" ||
+    typeof DeviceOrientationEvent.requestPermission !== "function"
   ) {
-    DeviceOrientationEvent.requestPermission()
-      .then((status) => {
-        if (status === "granted") console.log("gyroscope enabled");
-      })
-      .catch((err) =>
-        console.error("user doesn't like when cool things happen", err),
-      );
+    return;
   }
+
+  gyroRequested = true;
+  DeviceOrientationEvent.requestPermission()
+    .then((status) => {
+      if (status === "granted") console.log("gyroscope enabled");
+    })
+    .catch((err) => {
+      gyroRequested = false;
+      console.error("user doesn't like when cool things happen", err);
+    });
 }
 
-document.addEventListener("click", initGyroPermission, { once: true });
+["click", "touchend"].forEach((type) =>
+  document.addEventListener(type, initGyroPermission, { passive: true }),
+);
+
+const container = document.querySelector("a");
+const imageContainer = document.querySelector(".mouse-img");
+
+const xOffset = 20;
+const yOffset = 20;
+
+const link = document.querySelector("a");
+const popout = document.querySelector(".mouse-img");
+const POPOUT_OFFSET = 20;
+
+link.addEventListener("pointerenter", () => popout.classList.add("visible"));
+link.addEventListener("pointerleave", () => popout.classList.remove("visible"));
+link.addEventListener("pointermove", (e) => {
+  popout.style.left = `${e.clientX + POPOUT_OFFSET}px`;
+  popout.style.top = `${e.clientY + POPOUT_OFFSET}px`;
+});
