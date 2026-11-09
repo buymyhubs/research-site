@@ -146,7 +146,8 @@ window.addEventListener("scroll", requestUpdate, { passive: true });
 
 let gyroRequested = false;
 
-function initGyroPermission() {
+function initGyroPermission(e) {
+  if (e.target.closest("a")) return;
   if (gyroRequested) return;
   if (
     typeof DeviceOrientationEvent === "undefined" ||
@@ -176,13 +177,22 @@ const imageContainer = document.querySelector(".mouse-img");
 const xOffset = 20;
 const yOffset = 20;
 
-const link = document.querySelector("a");
+const link = document.querySelector(".img-mouse-hover a");
 const popout = document.querySelector(".mouse-img");
 const POPOUT_OFFSET = 20;
 
-link.addEventListener("pointerenter", () => popout.classList.add("visible"));
-link.addEventListener("pointerleave", () => popout.classList.remove("visible"));
-link.addEventListener("pointermove", (e) => {
-  popout.style.left = `${e.clientX + POPOUT_OFFSET}px`;
-  popout.style.top = `${e.clientY + POPOUT_OFFSET}px`;
-});
+if (link && popout) {
+  link.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") popout.classList.add("visible");
+  });
+
+  link.addEventListener("pointerleave", (e) => {
+    if (e.pointerType === "mouse") popout.classList.remove("visible");
+  });
+
+  link.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    popout.style.left = `${e.clientX + POPOUT_OFFSET}px`;
+    popout.style.top = `${e.clientY + POPOUT_OFFSET}px`;
+  });
+}
